@@ -21,6 +21,8 @@ All notable changes to SceneGlow for Home Assistant will be documented here.
   HACS, manual installation, updating, removal, troubleshooting, and support.
 - Remove internal planning, screenshot, source-artwork, and executable fake-server
   artifacts from the public repository while retaining automated regression tests.
+- Correct public repository links and release validation for HACS, Hassfest, and
+  the supported Python test matrix.
 
 ## 0.1.0-alpha.15 - 2026-08-25
 

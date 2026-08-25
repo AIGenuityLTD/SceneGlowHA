@@ -9,7 +9,7 @@ SceneGlowHA requires Python 3.13 or newer.
 ```bash
 python -m venv .venv
 . .venv/bin/activate
-python -m pip install -e '.[dev]'
+python -m pip install '.[dev]'
 ruff format --check .
 ruff check .
 pytest

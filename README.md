@@ -1,9 +1,9 @@
 # SceneGlow for Home Assistant
 
-[![Release](https://img.shields.io/github/v/release/sparxcore/SceneGlowHA)](https://github.com/sparxcore/SceneGlowHA/releases)
-[![Tests](https://github.com/sparxcore/SceneGlowHA/actions/workflows/test.yml/badge.svg)](https://github.com/sparxcore/SceneGlowHA/actions/workflows/test.yml)
-[![HACS validation](https://github.com/sparxcore/SceneGlowHA/actions/workflows/hacs.yml/badge.svg)](https://github.com/sparxcore/SceneGlowHA/actions/workflows/hacs.yml)
-[![License](https://img.shields.io/github/license/sparxcore/SceneGlowHA)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/AIGenuityLTD/SceneGlowHA)](https://github.com/AIGenuityLTD/SceneGlowHA/releases)
+[![Tests](https://github.com/AIGenuityLTD/SceneGlowHA/actions/workflows/test.yml/badge.svg)](https://github.com/AIGenuityLTD/SceneGlowHA/actions/workflows/test.yml)
+[![HACS validation](https://github.com/AIGenuityLTD/SceneGlowHA/actions/workflows/hacs.yml/badge.svg)](https://github.com/AIGenuityLTD/SceneGlowHA/actions/workflows/hacs.yml)
+[![License](https://img.shields.io/github/license/AIGenuityLTD/SceneGlowHA)](LICENSE)
 
 SceneGlow is a local-push Home Assistant custom integration for Android TV and
 Fire TV installations running the SceneGlow app. It discovers SceneGlow on the
@@ -25,12 +25,12 @@ configuration, effects, output addressing, and persisted settings.
 
 ### HACS (recommended)
 
-[![Open your Home Assistant instance and add this repository to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sparxcore&repository=SceneGlowHA&category=integration)
+[![Open your Home Assistant instance and add this repository to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=AIGenuityLTD&repository=SceneGlowHA&category=integration)
 
 1. Select the button above, or open **HACS → Integrations → ⋮ → Custom
    repositories**.
 2. If adding it manually, enter
-   `https://github.com/sparxcore/SceneGlowHA` and select **Integration**.
+   `https://github.com/AIGenuityLTD/SceneGlowHA` and select **Integration**.
 3. Open SceneGlow in HACS and select **Download**.
 4. Restart Home Assistant when prompted.
 5. Open **Settings → Devices & services → Add integration → SceneGlow**.
@@ -41,7 +41,7 @@ repository are not copied into Home Assistant.
 ### Guided manual installation
 
 1. Download and extract the source archive from the
-   [latest SceneGlowHA release](https://github.com/sparxcore/SceneGlowHA/releases/latest).
+   [latest SceneGlowHA release](https://github.com/AIGenuityLTD/SceneGlowHA/releases/latest).
 2. Open a terminal in the extracted directory.
 3. Run the installer with the path containing your Home Assistant
    `configuration.yaml`:
@@ -130,7 +130,7 @@ Common checks:
   integration diagnostics from Home Assistant.
 
 Report integration problems through the
-[SceneGlowHA issue tracker](https://github.com/sparxcore/SceneGlowHA/issues),
+[SceneGlowHA issue tracker](https://github.com/AIGenuityLTD/SceneGlowHA/issues),
 not to HACS or Home Assistant. Include the SceneGlowHA version, Home Assistant
 version, device platform, reproduction steps, relevant logs, and redacted
 integration diagnostics.
