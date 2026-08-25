@@ -17,7 +17,7 @@ configuration, effects, output addressing, and persisted settings.
 ## Requirements
 
 - Home Assistant 2025.11.2 or newer.
-- A compatible SceneGlow app with its native Home Assistant integration enabled.
+- A compatible SceneGlow app with its native Home Assistant integration enabled. (>1.7.5 - unreleased at time of writing.)
 - Home Assistant and the SceneGlow device on a network where mDNS and the
   SceneGlow API port are reachable.
 
