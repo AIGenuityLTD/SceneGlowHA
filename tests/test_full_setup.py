@@ -32,7 +32,11 @@ from tests.fake_sceneglow import (
 
 
 async def test_real_entry_setup_registers_every_typed_control_platform(
-    hass: HomeAssistant, aiohttp_server, socket_enabled, enable_custom_integrations
+    hass: HomeAssistant,
+    aiohttp_server,
+    enable_custom_integrations,
+    mock_async_zeroconf,
+    socket_enabled,
 ) -> None:
     """Forwarded platforms consume the complete initial coordinator snapshot."""
     fake = FakeSceneGlowServer(clients={CLIENT_ID: CLIENT_CREDENTIAL})

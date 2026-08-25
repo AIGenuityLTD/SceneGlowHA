@@ -52,6 +52,7 @@ def test_pair_schema_is_frontend_serializable() -> None:
 async def test_zeroconf_discovery_goes_directly_to_pin(
     hass: HomeAssistant,
     enable_custom_integrations,
+    mock_async_zeroconf,
     socket_enabled,
 ) -> None:
     """A discovered installation asks only for its TV PIN."""
@@ -95,6 +96,7 @@ async def test_zeroconf_discovery_goes_directly_to_pin(
 async def test_manual_fallback_also_uses_pin_only(
     hass: HomeAssistant,
     enable_custom_integrations,
+    mock_async_zeroconf,
     socket_enabled,
 ) -> None:
     """Manual address entry remains available when multicast is unavailable."""
@@ -119,6 +121,7 @@ async def test_manual_fallback_also_uses_pin_only(
 async def test_incorrect_pairing_code_stays_in_flow(
     hass: HomeAssistant,
     enable_custom_integrations,
+    mock_async_zeroconf,
     socket_enabled,
 ) -> None:
     """A rejected TV code is shown on its field and stores no config entry."""
@@ -147,6 +150,7 @@ async def test_incorrect_pairing_code_stays_in_flow(
 async def test_malformed_pairing_code_is_rejected_before_request(
     hass: HomeAssistant,
     enable_custom_integrations,
+    mock_async_zeroconf,
     socket_enabled,
 ) -> None:
     """Malformed codes stay in the form and are never sent to SceneGlow."""
