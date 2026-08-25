@@ -1,0 +1,13 @@
+{
+  "domain": "sceneglow",
+  "name": "SceneGlow",
+  "version": "1.0.0",
+  "codeowners": ["@sparxcore"],
+  "config_flow": true,
+  "dependencies": ["zeroconf"],
+  "documentation": "https://github.com/sparxcore/SceneGlowHA",
+  "integration_type": "hub",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/sparxcore/SceneGlowHA/issues",
+  "zeroconf": ["_sceneglow._tcp.local."]
+}

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Home Assistant support
+    url: https://www.home-assistant.io/help/
+    about: Use Home Assistant support for problems not specific to SceneGlowHA.
+  - name: HACS documentation
+    url: https://hacs.xyz/docs/use/
+    about: Use the HACS documentation for HACS installation and repository problems.

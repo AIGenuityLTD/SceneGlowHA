@@ -1,0 +1,69 @@
+name: Bug report
+description: Report a reproducible SceneGlowHA integration problem
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a problem. Remove credentials, pairing codes, host addresses, and captured content before submitting.
+  - type: input
+    id: integration_version
+    attributes:
+      label: SceneGlowHA version
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: input
+    id: home_assistant_version
+    attributes:
+      label: Home Assistant version
+      placeholder: 2026.8.1
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: SceneGlow device platform
+      options:
+        - Android TV
+        - Fire TV
+        - Both
+        - Unknown
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe what happened and what you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. Open ...
+        2. Change ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Redacted diagnostics and logs
+      description: Attach Home Assistant integration diagnostics and relevant logs after checking them for private data.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I am running a supported Home Assistant version.
+          required: true
+        - label: I searched existing issues for this problem.
+          required: true
+        - label: I removed credentials, pairing codes, host addresses, and captured content.
+          required: true

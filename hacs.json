@@ -1,0 +1,7 @@
+{
+  "name": "SceneGlow",
+  "content_in_root": false,
+  "country": ["GB"],
+  "homeassistant": "2025.11.2",
+  "render_readme": true
+}

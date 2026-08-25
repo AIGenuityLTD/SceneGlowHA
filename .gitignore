@@ -1,0 +1,12 @@
+.coverage
+.mypy_cache/
+.pip-tmp/
+.pytest_cache/
+.ruff_cache/
+.test-deps/
+.test-stubs/
+.venv/
+.wheels/
+__pycache__/
+*.egg-info/
+htmlcov/
