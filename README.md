@@ -14,6 +14,9 @@ Home Assistant long-lived access token.
 The SceneGlow app remains authoritative for capture state, fixture
 configuration, effects, output addressing, and persisted settings.
 
+For complete pairing, control, permission, fixture, dashboard, automation, and
+troubleshooting instructions, see the [SceneGlow User Guide](Docs/USER_GUIDE.md).
+
 ## Requirements
 
 - Home Assistant 2025.11.2 or newer.
