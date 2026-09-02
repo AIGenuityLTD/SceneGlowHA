@@ -15,6 +15,8 @@ Now with this Home Assistant integration you can control mood lighting using
 any Colour Light type, and configure, start/stop and adjust effect settings
 right from Home Assistant.
 
+SceneGlow is available from [Google Play Store](https://play.google.com/store/apps/details?id=com.sceneglow.tv) or [Amazon App Store](https://www.amazon.co.uk/AIGENUITY-SceneGlow/dp/B0HF6L7HVR/ref=sr_1_1)
+
 ## What Is SceneGlowHA 
 
 SceneGlowHA is a local Home Assistant custom integration for the SceneGlow app. 
