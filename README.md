@@ -5,11 +5,22 @@
 [![HACS validation](https://github.com/AIGenuityLTD/SceneGlowHA/actions/workflows/hacs.yml/badge.svg)](https://github.com/AIGenuityLTD/SceneGlowHA/actions/workflows/hacs.yml)
 [![License](https://img.shields.io/github/license/AIGenuityLTD/SceneGlowHA)](LICENSE)
 
-SceneGlow is a local-push Home Assistant custom integration for Android TV and
-Fire TV installations running the SceneGlow app. It discovers SceneGlow on the
-local network, pairs with the PIN shown on the TV, exposes capture and fixture
-controls, and can broker compatible Home Assistant colour lights without a
-Home Assistant long-lived access token.
+## What Is SceneGlow
+
+SceneGlow is a GoogleTV and Amazon FireTV native android application which
+captures your supported on-screen content and creates an Ambilight effect
+using a connected WLED device via its DDP protocol. You can also create other
+effects with other WLED devices as with different styles and fixture effects.
+Now with this Home Assistant integration you can control mood lighting using
+any Colour Light type, and configure, start/stop and adjust effect settings
+right from Home Assistant.
+
+## What Is SceneGlowHA 
+
+SceneGlowHA is a local Home Assistant custom integration for the SceneGlow app. 
+It discovers SceneGlow on the local network, pairs with the PIN shown on the TV,
+exposes capture and fixture controls, and can broker compatible Home Assistant
+colour lights without a Home Assistant long-lived access token.
 
 The SceneGlow app remains authoritative for capture state, fixture
 configuration, effects, output addressing, and persisted settings.
