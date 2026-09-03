@@ -25,7 +25,7 @@ def test_manifest_and_hacs_metadata_agree() -> None:
         *sorted(set(manifest) - {"domain", "name"}),
     ]
     assert manifest["domain"] == DOMAIN
-    assert manifest["version"] == "1.1.0.dev0"
+    assert manifest["version"] == "1.1.0"
     assert manifest["documentation"] == ("https://github.com/AIGenuityLTD/SceneGlowHA")
     assert manifest["issue_tracker"] == (
         "https://github.com/AIGenuityLTD/SceneGlowHA/issues"
