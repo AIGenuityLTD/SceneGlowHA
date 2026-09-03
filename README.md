@@ -33,7 +33,7 @@ troubleshooting instructions, see the [SceneGlow User Guide](Docs/USER_GUIDE.md)
 ## Requirements
 
 - Home Assistant 2025.11.2 or newer.
-- A compatible SceneGlow app with its native Home Assistant integration enabled. (>1.7.5 - unreleased at time of writing.)
+- A compatible SceneGlow app with its native Home Assistant integration enabled. (>1.7.5)
 - Home Assistant and the SceneGlow device on a network where mDNS and the
   SceneGlow API port are reachable.
 
