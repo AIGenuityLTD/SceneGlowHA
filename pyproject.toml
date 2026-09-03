@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sceneglow-ha"
-version = "1.0.0"
+version = "1.1.0.dev0"
 description = "Home Assistant integration for SceneGlow"
 readme = "README.md"
 requires-python = ">=3.13"

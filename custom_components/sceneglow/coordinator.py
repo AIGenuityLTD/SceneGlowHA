@@ -580,6 +580,7 @@ class SceneGlowCoordinator(DataUpdateCoordinator[SceneGlowSnapshot]):
         request_id = request.get("request_id")
         response_type = (
             {
+                "ha.light.area.catalog.request": "ha.light.area.catalog.response",
                 "ha.light.catalog.request": "ha.light.catalog.response",
                 "ha.light.apply.request": "ha.light.apply.result",
             }.get(request_type, "ha.light.error")
@@ -592,8 +593,13 @@ class SceneGlowCoordinator(DataUpdateCoordinator[SceneGlowSnapshot]):
             "request_id": request_id if isinstance(request_id, str) else "",
         }
         try:
-            if request_type == "ha.light.catalog.request":
-                response.update(self._light_catalogue_response())
+            if request_type == "ha.light.area.catalog.request":
+                response.update(self._light_area_catalogue_response())
+            elif request_type == "ha.light.catalog.request":
+                requested_area = request.get("area_id")
+                if requested_area is not None and not isinstance(requested_area, str):
+                    raise ValueError("invalid_area_id")
+                response.update(self._light_catalogue_response(requested_area))
             elif request_type == "ha.light.apply.request":
                 await self._async_apply_light(request)
                 response["status"] = "applied"
@@ -615,11 +621,37 @@ class SceneGlowCoordinator(DataUpdateCoordinator[SceneGlowSnapshot]):
             if entry.domain == LIGHT_DOMAIN and entry.disabled_by is None
         ]
 
-    def _light_catalogue_response(self) -> dict[str, Any]:
-        """Build the complete compatible catalogue and its default HA Area."""
+    def _light_area_catalogue_response(self) -> dict[str, Any]:
+        """Build compact Area metadata before a selected-Area light request."""
+        counts: dict[str, tuple[str, int]] = {}
+        for light in self._light_catalogue():
+            area_id = light["area_id"]
+            area_name, count = counts.get(area_id, (light["area_name"], 0))
+            counts[area_id] = (area_name, count + 1)
         default_area_id, default_area_name = self._default_area()
         return {
-            "lights": self._light_catalogue(),
+            "areas": sorted(
+                (
+                    {
+                        "area_id": area_id,
+                        "area_name": area_name,
+                        "compatible_light_count": count,
+                    }
+                    for area_id, (area_name, count) in counts.items()
+                ),
+                key=lambda area: area["area_name"].lower(),
+            ),
+            "default_area_id": default_area_id,
+            "default_area_name": default_area_name,
+        }
+
+    def _light_catalogue_response(
+        self, requested_area_id: str | None = None
+    ) -> dict[str, Any]:
+        """Build a compatible catalogue, optionally scoped to one HA Area."""
+        default_area_id, default_area_name = self._default_area()
+        return {
+            "lights": self._light_catalogue(requested_area_id),
             "default_area_id": default_area_id,
             "default_area_name": default_area_name,
         }
@@ -633,8 +665,10 @@ class SceneGlowCoordinator(DataUpdateCoordinator[SceneGlowSnapshot]):
         area = ar.async_get(self.hass).async_get_area(device.area_id)
         return device.area_id, area.name if area else device.area_id
 
-    def _light_catalogue(self) -> list[dict[str, Any]]:
-        """Build all compatible HA lights grouped through Area metadata."""
+    def _light_catalogue(
+        self, requested_area_id: str | None = None
+    ) -> list[dict[str, Any]]:
+        """Build compatible HA lights, optionally for only one Area."""
         areas = ar.async_get(self.hass)
         devices = dr.async_get(self.hass)
         result: list[dict[str, Any]] = []
@@ -647,13 +681,16 @@ class SceneGlowCoordinator(DataUpdateCoordinator[SceneGlowSnapshot]):
             if not area_id and entry.device_id:
                 device = devices.async_get(entry.device_id)
                 area_id = device.area_id if device else None
-            area = areas.async_get_area(area_id) if area_id else None
+            resolved_area_id = area_id or ""
+            if requested_area_id is not None and resolved_area_id != requested_area_id:
+                continue
+            area = areas.async_get_area(resolved_area_id) if resolved_area_id else None
             result.append(
                 {
                     "reference": entry.id,
                     "entity_id": entry.entity_id,
                     "name": entry.name or entry.original_name or state.name,
-                    "area_id": area_id or "",
+                    "area_id": resolved_area_id,
                     "area_name": area.name if area else "Unassigned",
                     "supported_color_modes": sorted(str(mode) for mode in color_modes),
                     "supports_transition": bool(
