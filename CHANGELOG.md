@@ -2,7 +2,7 @@
 
 All notable changes to SceneGlow for Home Assistant will be documented here.
 
-## 1.1.0.dev0 - Unreleased
+## 1.1.0 - 2026-09-03
 
 - Add Area-first compatible-light discovery and selected-Area catalogue requests,
   while retaining complete catalogue responses for older SceneGlow clients.

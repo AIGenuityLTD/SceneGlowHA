@@ -21,8 +21,8 @@ def test_installer_creates_clean_install_and_recoverable_upgrade(
         text=True,
     )
     target = tmp_path / "custom_components" / "sceneglow"
-    assert "SceneGlow 1.1.0.dev0 installed" in first.stdout
-    assert json.loads((target / "manifest.json").read_text())["version"] == "1.1.0.dev0"
+    assert "SceneGlow 1.1.0 installed" in first.stdout
+    assert json.loads((target / "manifest.json").read_text())["version"] == "1.1.0"
     assert not (target / "button.py").exists()
 
     stale = target / "obsolete.py"
