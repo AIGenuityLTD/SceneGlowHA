@@ -1,0 +1,128 @@
+{
+  "title": "SceneGlow",
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "user": {
+        "title": "Connect manually to SceneGlow",
+        "description": "SceneGlow devices are normally discovered automatically. Enter an address only when multicast discovery is unavailable.",
+        "data": {
+          "host": "Host",
+          "port": "Port"
+        }
+      },
+      "pair": {
+        "title": "Pair with {name}",
+        "description": "On {name}, enable Home Assistant pairing and enter the six-digit PIN shown on the TV. SceneGlow will receive the compatible light catalogue grouped by Home Assistant Area.",
+        "data": {
+          "pairing_code": "PIN"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Reauthenticate SceneGlow",
+        "description": "Enable pairing on the TV and enter the new short-lived code.",
+        "data": {
+          "pairing_code": "Pairing code"
+        }
+      },
+      "reconfigure": {
+        "title": "Update SceneGlow connection",
+        "description": "The stored server identity and installation UUID must match at the new address.",
+        "data": {
+          "host": "Host",
+          "port": "Port"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to SceneGlow",
+      "identity_mismatch": "The SceneGlow server identity does not match",
+      "invalid_host": "Enter a valid hostname or IP address",
+      "invalid_pairing_code": "The PIN was rejected, expired, or pairing is not active on the TV",
+      "protocol_incompatible": "This SceneGlow protocol version is not supported",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This SceneGlow installation is already configured",
+      "identity_mismatch": "The discovered installation identity did not match its advertisement",
+      "insecure_discovery": "SceneGlow advertised an insecure non-local endpoint",
+      "invalid_discovery": "The SceneGlow discovery record is incomplete",
+      "protocol_incompatible": "This SceneGlow protocol version is not supported",
+      "reauth_successful": "SceneGlow was reauthenticated",
+      "reconfigure_successful": "SceneGlow connection details were updated"
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "connected": {
+        "name": "Connected"
+      }
+    },
+    "sensor": {
+      "capture_resolution": {
+        "name": "Capture resolution"
+      },
+      "output_fps": {
+        "name": "Output frame rate"
+      },
+      "processing_time": {
+        "name": "Processing time"
+      },
+      "service_state": {
+        "name": "Capture state",
+        "state": {
+          "stopped": "Stopped",
+          "starting": "Starting",
+          "awaiting_capture_permission": "Awaiting capture permission",
+          "running": "Running",
+          "paused": "Paused",
+          "stopping": "Stopping",
+          "error": "Error"
+        }
+      }
+    },
+    "switch": {
+      "capture": {
+        "name": "Capture session"
+      },
+      "capture_processing": {
+        "name": "Capture processing"
+      },
+      "fixture_capture_enabled": {
+        "name": "Included in current capture"
+      },
+      "home_assistant_ambience": {
+        "name": "Home Assistant Ambience"
+      },
+      "detect_black_bars": {
+        "name": "Detect Black Bars"
+      },
+      "capture_indicator_exclusion": {
+        "name": "Ignore Screen Capture Indicator"
+      },
+      "performance_diagnostics": {
+        "name": "Performance Diagnostics"
+      }
+    }
+  },
+  "exceptions": {
+    "service_control_failed": {
+      "message": "SceneGlow did not accept the capture request"
+    },
+    "revision_conflict": {
+      "message": "SceneGlow changed this configuration at the same time. Please try again."
+    },
+    "fixture_control_failed": {
+      "message": "SceneGlow did not accept the fixture control request"
+    },
+    "configuration_control_failed": {
+      "message": "SceneGlow did not accept the configuration control request"
+    },
+    "control_unavailable": {
+      "message": "This SceneGlow control is unavailable on this device"
+    },
+    "invalid_configuration": {
+      "message": "SceneGlow rejected the change because it would create an invalid configuration"
+    }
+  }
+}

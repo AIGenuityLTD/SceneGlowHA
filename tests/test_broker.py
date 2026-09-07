@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from types import SimpleNamespace
 from unittest.mock import Mock
 
@@ -31,15 +32,19 @@ def _coordinator(
     return SceneGlowCoordinator(hass, entry, Mock())
 
 
-def _colour_light(hass: HomeAssistant):
-    area = ar.async_get(hass).async_create("Living Room")
+def _colour_light(
+    hass: HomeAssistant,
+    unique_id: str = "lamp",
+    area=None,
+):
+    area = area or ar.async_get(hass).async_create("Living Room")
     registry = er.async_get(hass)
     entry = registry.async_get_or_create(
         "light",
         "test",
-        "lamp",
-        suggested_object_id="lamp",
-        original_name="Lamp",
+        unique_id,
+        suggested_object_id=unique_id,
+        original_name=unique_id.replace("_", " ").title(),
     )
     registry.async_update_entity(entry.entity_id, area_id=area.id)
     hass.states.async_set(
@@ -48,6 +53,23 @@ def _colour_light(hass: HomeAssistant):
         {ATTR_SUPPORTED_COLOR_MODES: [ColorMode.RGB]},
     )
     return registry.async_get(entry.entity_id), area
+
+
+def _unassigned_colour_light(hass: HomeAssistant, unique_id: str = "portable"):
+    registry = er.async_get(hass)
+    entry = registry.async_get_or_create(
+        "light",
+        "test",
+        unique_id,
+        suggested_object_id=unique_id,
+        original_name=unique_id.replace("_", " ").title(),
+    )
+    hass.states.async_set(
+        entry.entity_id,
+        "on",
+        {ATTR_SUPPORTED_COLOR_MODES: [ColorMode.RGB]},
+    )
+    return registry.async_get(entry.entity_id)
 
 
 def test_catalogue_contains_all_compatible_lights_with_opaque_reference(
@@ -96,24 +118,113 @@ def test_catalogue_includes_unassigned_compatible_lights(
     hass: HomeAssistant,
 ) -> None:
     """Compatible lights without an HA Area remain available."""
-    registry = er.async_get(hass)
-    entry = registry.async_get_or_create(
-        "light",
-        "test",
-        "unassigned",
-        suggested_object_id="unassigned",
-        original_name="Unassigned light",
-    )
-    hass.states.async_set(
-        entry.entity_id,
-        "on",
-        {ATTR_SUPPORTED_COLOR_MODES: [ColorMode.RGB]},
-    )
+    _unassigned_colour_light(hass, "unassigned")
 
     light = _coordinator(hass)._light_catalogue()[0]
 
     assert light["area_id"] == ""
     assert light["area_name"] == "Unassigned"
+
+
+def test_area_catalogue_is_compact_and_counts_compatible_lights(
+    hass: HomeAssistant,
+) -> None:
+    """Area discovery returns counts rather than the complete light payload."""
+    _first, area = _colour_light(hass)
+    _colour_light(hass, "second_lamp", area)
+    _unassigned_colour_light(hass)
+
+    response = _coordinator(hass)._light_area_catalogue_response()
+
+    assert response["areas"] == [
+        {
+            "area_id": area.id,
+            "area_name": "Living Room",
+            "compatible_light_count": 2,
+        },
+        {
+            "area_id": "",
+            "area_name": "Unassigned",
+            "compatible_light_count": 1,
+        },
+    ]
+
+
+def test_large_installation_returns_a_compact_area_catalogue(
+    hass: HomeAssistant,
+) -> None:
+    """Hundreds of lights do not make the first discovery response large."""
+    areas = [
+        ar.async_get(hass).async_create(f"Test Area {index}") for index in range(5)
+    ]
+    for index in range(500):
+        _colour_light(hass, f"fixture_{index}", areas[index % len(areas)])
+
+    coordinator = _coordinator(hass)
+    response = coordinator._light_area_catalogue_response()
+
+    assert len(response["areas"]) == 5
+    assert {area["compatible_light_count"] for area in response["areas"]} == {100}
+    assert len(json.dumps(response).encode()) < 2_048
+    assert len(coordinator._light_catalogue(areas[0].id)) == 100
+
+
+async def test_catalogue_request_can_be_scoped_to_one_area(
+    hass: HomeAssistant,
+) -> None:
+    """Scope new clients to an Area while retaining full legacy catalogues."""
+    first, area = _colour_light(hass)
+    second, _area = _colour_light(hass, "second_lamp", area)
+    unassigned = _unassigned_colour_light(hass)
+    coordinator = _coordinator(hass)
+
+    scoped = await coordinator._async_handle_broker_request(
+        {
+            "type": "ha.light.catalog.request",
+            "request_id": "request-scoped",
+            "area_id": area.id,
+        }
+    )
+    unassigned_response = await coordinator._async_handle_broker_request(
+        {
+            "type": "ha.light.catalog.request",
+            "request_id": "request-unassigned",
+            "area_id": "",
+        }
+    )
+    legacy = await coordinator._async_handle_broker_request(
+        {
+            "type": "ha.light.catalog.request",
+            "request_id": "request-legacy",
+        }
+    )
+
+    assert {light["entity_id"] for light in scoped["lights"]} == {
+        first.entity_id,
+        second.entity_id,
+    }
+    assert [light["entity_id"] for light in unassigned_response["lights"]] == [
+        unassigned.entity_id
+    ]
+    assert len(legacy["lights"]) == 3
+
+
+async def test_area_catalogue_request_uses_correlated_response_type(
+    hass: HomeAssistant,
+) -> None:
+    """The Area-first request remains on the authenticated light-broker channel."""
+    _entry, area = _colour_light(hass)
+
+    response = await _coordinator(hass)._async_handle_broker_request(
+        {
+            "type": "ha.light.area.catalog.request",
+            "request_id": "request-areas",
+        }
+    )
+
+    assert response["type"] == "ha.light.area.catalog.response"
+    assert response["request_id"] == "request-areas"
+    assert response["areas"][0]["area_id"] == area.id
 
 
 async def test_apply_is_constrained_to_compatible_light(
